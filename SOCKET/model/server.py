@@ -1,17 +1,14 @@
+# server.py
 import socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(('0.0.0.0', 9999))  # Allow connections from any device on the network
+server.listen(5)
+print("Server running on 192.168.95.203:9999...")
 
-s=socket.socket()
-print('socket created')
-
-s.bind(('localhost',9999))
-
-s.listen(3)
-print('waiting for the connection')
-
-while True :
-    c, add =s.accept()
-    print("connection with",add)
-    
-    c.send(bytes('welcom to adarsh','utf-8'))
-    
-    c.close()
+while True:
+    client, addr = server.accept()
+    print(f"Connected by {addr}")
+    data = client.recv(1024).decode()
+    print(f"Received: {data}")
+    client.send("Hello from server!".encode())
+    client.close()
